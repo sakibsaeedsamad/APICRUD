@@ -12,44 +12,40 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserRepository userRepository;
-    
+
     @GetMapping("/allUser")
-	public List<User> findAllUsers() {
-		return userRepository.findAll();
-	}
-
-
-
-
-	@PostMapping("/insertUser")
-	public User addUser(@RequestBody User user) {
-    	
-    	return userRepository.save(user);
-	}
-
-
-	@PutMapping("/updateUser/{id}")
-    public User updateUser(@RequestBody User user,  @PathVariable long id) {
-    	User existingUser = userRepository.findById(user.getId()).orElse(null);
-		existingUser.setName(user.getName());
-		existingUser.setNumber(user.getNumber());
-		existingUser.setAge(user.getAge());
-		existingUser.setGender(user.getGender());
-		existingUser.setLocation(user.getLocation());
-		existingUser.setImage(user.getImage());
-		return userRepository.save(existingUser);
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
-    
-    @DeleteMapping("/deleteUser/{id}")
-	public DeleteResponse deleteUser(@PathVariable int id) {
-    	DeleteResponse delres = new DeleteResponse();
-    	
-    	userRepository.deleteById(id);
-    	delres.setDeleteCode("1");
-    	delres.setDeleteMessage("USER Delete SUCCESSFULLY");
 
-		return  delres;
-	}
-    
-    
+    @PostMapping("/insertUser")
+    public User addUser(@RequestBody User user) {
+
+        return userRepository.save(user);
+    }
+
+    @PostMapping("/updateUser/{id}")
+    public User updateUser(@RequestBody User user, @PathVariable int id) {
+        User existingUser = userRepository.findById(id).orElse(null);
+        existingUser.setName(user.getName());
+        existingUser.setNumber(user.getNumber());
+        existingUser.setAge(user.getAge());
+        existingUser.setGender(user.getGender());
+        existingUser.setLocation(user.getLocation());
+        existingUser.setImage(user.getImage());
+        return userRepository.save(existingUser);
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public DeleteResponse deleteUser(@PathVariable int id) {
+        DeleteResponse delres = new DeleteResponse();
+
+        userRepository.deleteById(id);
+        delres.setDeleteCode("1");
+        delres.setDeleteMessage("USER Delete SUCCESSFULLY");
+
+        return delres;
+    }
+
+
 }
